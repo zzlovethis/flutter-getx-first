@@ -14,7 +14,9 @@ class MoviesAPI {
 
     Dio dio = Dio();
 
+    //String? url = 'http://192.168.1.174:4000/v1/movies';
     String? url = 'http://192.168.43.158:4000/v1/movies';
+
 
     Response response = await dio.get(url); //.map((e) =>MoviesEntity.fromJson(e)).toList();
 
