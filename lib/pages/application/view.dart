@@ -4,6 +4,7 @@ import 'package:flutter_ducafecat_news_getx/common/widgets/widgets.dart';
 import 'package:flutter_ducafecat_news_getx/pages/category/index.dart';
 import 'package:flutter_ducafecat_news_getx/pages/counter/index.dart';
 import 'package:flutter_ducafecat_news_getx/pages/main/index.dart';
+import 'package:flutter_ducafecat_news_getx/pages/blog//index.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -41,7 +42,7 @@ class ApplicationPage extends GetView<ApplicationController> {
         MainPage(),
         CategoryPage(),
         Text('BookmarksPage'),
-        Text('AccountPage'),
+        BlogPage(),
         MoviePageList(),
       ],
       controller: controller.pageController,

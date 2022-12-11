@@ -42,6 +42,10 @@ dependencies:
   # 下拉刷新
   pull_to_refresh: ^2.0.0
 
+  #本地数据库，先用本地数据库进行练习
+  sqflite: ^2.2.2
+  path: ^1.6.4
+
   # toast
   fluttertoast: ^8.0.7
 
