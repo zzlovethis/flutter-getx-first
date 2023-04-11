@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ducafecat_news_getx/common/middlewares/middlewares.dart';
 import 'package:flutter_ducafecat_news_getx/pages/application/index.dart';
+import 'package:flutter_ducafecat_news_getx/pages/blog/index.dart';
 import 'package:flutter_ducafecat_news_getx/pages/category/index.dart';
 import 'package:flutter_ducafecat_news_getx/pages/frame/sign_in/index.dart';
 import 'package:flutter_ducafecat_news_getx/pages/frame/sign_up/index.dart';
 import 'package:flutter_ducafecat_news_getx/pages/frame/welcome/index.dart';
 import 'package:get/get.dart';
 
+//import '../../pages/blog/bindings.dart';
+//import '../../pages/blog/view.dart';
 import '../../pages/counter/bindings.dart';
 import '../../pages/counter/view.dart';
 import 'routes.dart';
@@ -53,10 +56,30 @@ class AppPages {
       page: () => CategoryPage(),
       binding: CategoryBinding(),
     ),
+
     GetPage(
         name: AppRoutes.Counter,
         page: () => MoviePageList(),
-        binding: CounterBinding(),)
+        binding: CounterBinding(),),
+
+    GetPage(
+      name: AppRoutes.Blog,
+      page: () => BlogPage(),
+      binding: BlogBinding(),
+    ),
+
+    // GetPage(
+    //   name: AppRoutes.BlogList,
+    //   page: () => BlogPageList(),
+    //   binding: BlogBinding(),),
+
+    // GetPage(
+    //   name: AppRoutes.BlogListAddTask,
+    //   page: () => AddTaskPage(),
+    //   binding: BlogBinding(),)
+
+
+
   ];
 
   // static final unknownRoute = GetPage(

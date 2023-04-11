@@ -65,7 +65,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:pull_to_refresh/src/smart_refresher.dart';
+//import 'package:pull_to_refresh/src/smart_refresher.dart';
 
 
 Future<void> main() async {

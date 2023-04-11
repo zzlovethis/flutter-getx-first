@@ -15,6 +15,7 @@ class NewsPageList extends StatefulWidget {
 
 class _NewsPageListState extends State<NewsPageList>
     with AutomaticKeepAliveClientMixin {
+
   @override
   bool get wantKeepAlive => true;
 

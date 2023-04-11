@@ -6,6 +6,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'index.dart';
 
 class CategoryController extends GetxController {
+
   CategoryController();
 
   /// UI 组件
@@ -75,5 +76,6 @@ class CategoryController extends GetxController {
     super.dispose();
     // dispose 释放对象
     refreshController.dispose();
+
   }
 }

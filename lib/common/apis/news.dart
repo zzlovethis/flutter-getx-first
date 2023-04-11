@@ -2,7 +2,7 @@ import 'package:flutter_ducafecat_news_getx/common/entities/entities.dart';
 import 'package:flutter_ducafecat_news_getx/common/utils/utils.dart';
 import 'package:flutter_ducafecat_news_getx/common/values/values.dart';
 
-/// 新闻
+/// 新闻,这里的API的作用是在上述基础上针对本app进行包装组合，以便进行显示。
 class NewsAPI {
   /// 翻页
   /// refresh 是否刷新

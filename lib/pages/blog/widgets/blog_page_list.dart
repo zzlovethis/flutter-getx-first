@@ -1,142 +1,100 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ducafecat_news_getx/common/entities/blog_list.dart';
-import 'package:flutter_ducafecat_news_getx/common/entities/entities.dart';
-import '../../../common/services/sqliteDBhelper.dart';
-import '../../../common/entities/entities.dart';
+import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-
-
+import '../index.dart';
+import 'widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 class BlogPageList extends StatefulWidget {
+
+  BlogPageList({Key? key}) : super(key: key);
+
   @override
   _BlogPageListState createState() => _BlogPageListState();
 }
 
-class _BlogPageListState extends State<BlogPageList> {
-
-  List<BlogList> blogList;
-  DbHelper helper = DbHelper();
-  BlogListDialog dialog;
+class _BlogPageListState extends State<BlogPageList>
+    with AutomaticKeepAliveClientMixin {
 
   @override
-  void initState() {
-    dialog = BlogListDialog();
-    super.initState();
-  }
+  bool get wantKeepAlive => true;
+
+  final controller = Get.find<BlogPageController>();
+
+  RefreshController blogRefreshController = RefreshController(initialRefresh: true);
 
   @override
   Widget build(BuildContext context) {
-    showData();
+    //super.build(context);
+    //controller.fetchBlogList();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Blog List'),
+        title: Text('Blog 清单'),
       ),
-      body: ListView.builder(
-          itemCount: (blogList != null) ? blogList.length : 0,
-          itemBuilder: (BuildContext context, int index) {
-            return Dismissible(
-                key: Key(blogList[index].title),
+      body: GetX<BlogPageController>(
+        init: controller,
+        builder: (controller) => SmartRefresher(
+          enablePullUp: true,
+          controller: this.blogRefreshController,
+          onRefresh: controller.onRefresh,
+          onLoading: controller.onLoading,
+          child: ListView.builder(
+            itemCount: controller.state.blogList.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Dismissible(
+                key: Key(UniqueKey().toString()),
                 onDismissed: (direction) {
-                  String strName = blogList[index].title];
-                  helper.deleteList(blogList[index]);
-                  setState(() {
-                    blogList.removeAt(index);
-                  });
-                  Scaffold.of(context).showSnackBar(
-                      SnackBar(content: Text("$strName deleted")));
+                  String? strName =
+                      controller.state.blogList[index].id.toString();
+                  Get.snackbar("$strName deleted", "deleted !!!");
+                  controller.deleteBlogList(controller.state.blogList[index]);
                 },
                 child: ListTile(
-                    title: Text(blogList[index].title),
-                    leading: CircleAvatar(
-                      child: Text(blogList[index].priority.toString()),
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                ItemsScreen(shoppingList[index])),
-                      );
-                    },
-                    trailing: IconButton(
+                  title:
+                      Text(controller.state.blogList[index].title.toString()),
+                  leading: CircleAvatar(
+                    child: Text(controller.state.blogList[index].id.toString()),
+                  ),
+                  onTap: () {
+                    Get.to(BlogDetailsScreen(controller.state.blogList[index]));
+                  },
+                  trailing: IconButton(
                       icon: Icon(Icons.edit),
                       onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                dialog.buildDialog(
-                                    context, shoppingList[index], false));
-                      },
-                    )));
-          }),
+                        //Get.dialog(widget);
+                      }),
+                ),
+              );
+            },
+          ),
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) =>
-                dialog.buildDialog(context, ShoppingList(0, '', 0), true),
-          );
+          //Get.to(()=>AddTaskPage());
+          Future.delayed(Duration.zero,(){
+            Get.to(()=>AddTaskPage());
+          });
+          //Get.offAndToNamed('/blogListAddTask');
+          //Get.toNamed('/blogListAddTask');
+          // void _popupMenuSelected(PopupMenuChoice choice) {
+          //   Navigator.push(context, choice.pageRoute);
+          // }
+          // navigator?.pushNamed(
+          //   ,
+          //   ),
+          // );
+          //controller.fetchBlogList(isRefresh: false);
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.pink,
       ),
     );
   }
-
-  Future showData() async {
-    await helper.openDb();
-    BlogList = await helper.getLists();
-    setState(() {
-      shoppingList = shoppingList;
-    });
-  }
 }
 
-class NewsPageList extends StatefulWidget {
-  NewsPageList({Key? key}) : super(key: key);
 
-  @override
-  _NewsPageListState createState() => _NewsPageListState();
-}
 
-class _NewsPageListState extends State<NewsPageList>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
-
-  final controller = Get.find<CategoryController>();
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return GetX<CategoryController>(
-      init: controller,
-      builder: (controller) => SmartRefresher(
-        enablePullUp: true,
-        controller: controller.refreshController,
-        onRefresh: controller.onRefresh,
-        onLoading: controller.onLoading,
-        child: CustomScrollView(
-          slivers: [
-            SliverPadding(
-              padding: EdgeInsets.symmetric(
-                vertical: 0.w,
-                horizontal: 0.w,
-              ),
-              sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                      (content, index) {
-                    var item = controller.state.newsList[index];
-                    return newsListItem(item);
-                  },
-                  childCount: controller.state.newsList.length,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}

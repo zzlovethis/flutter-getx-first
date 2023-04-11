@@ -20,6 +20,7 @@ class Global {
 
     Get.put<ConfigStore>(ConfigStore());
     Get.put<UserStore>(UserStore());
+
   }
 
   static void setSystemUi() {

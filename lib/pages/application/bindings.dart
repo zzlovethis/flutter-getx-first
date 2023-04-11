@@ -1,6 +1,8 @@
+import 'package:flutter_ducafecat_news_getx/pages/blog/controller.dart';
 import 'package:flutter_ducafecat_news_getx/pages/category/index.dart';
 import 'package:flutter_ducafecat_news_getx/pages/main/index.dart';
 import 'package:flutter_ducafecat_news_getx/pages/counter/index.dart';
+//import 'package:flutter_ducafecat_news_getx/pages/blog/index.dart';
 
 import 'package:get/get.dart';
 
@@ -13,6 +15,7 @@ class ApplicationBinding implements Bindings {
     Get.lazyPut<MainController>(() => MainController());
     Get.lazyPut<CategoryController>(() => CategoryController());
     Get.lazyPut<CounterController>(() => CounterController());
+    Get.lazyPut<BlogPageController>(() => BlogPageController());
 
   }
 }

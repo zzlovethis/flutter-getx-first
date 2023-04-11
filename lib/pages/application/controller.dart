@@ -96,7 +96,7 @@ class ApplicationController extends GetxController {
     // handleIncomingLinks();
 
     // 准备一些静态数据
-    tabTitles = ['Welcome', 'Cagegory', 'Bookmarks', 'Account'];
+    tabTitles = ['Welcome', 'Cagegory', 'Blog', 'Account',"Me"];
     bottomTabs = <BottomNavigationBarItem>[
       new BottomNavigationBarItem(
         icon: Icon(
@@ -131,7 +131,7 @@ class ApplicationController extends GetxController {
           Iconfont.tag,
           color: AppColors.secondaryElementText,
         ),
-        label: 'tag',
+        label: 'blog',
         backgroundColor: AppColors.primaryBackground,
       ),
       new BottomNavigationBarItem(
@@ -143,7 +143,7 @@ class ApplicationController extends GetxController {
           Iconfont.me,
           color: AppColors.secondaryElementText,
         ),
-        label: 'my',
+        label: 'counter',
         backgroundColor: AppColors.primaryBackground,
       ),
 
@@ -156,7 +156,7 @@ class ApplicationController extends GetxController {
         Iconfont.me,
         color: AppColors.secondaryElementText,
       ),
-      label: 'counter',
+      label: 'me',
       backgroundColor: AppColors.primaryBackground,
     ),
     ];

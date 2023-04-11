@@ -1,21 +1,9 @@
-import 'dart:async';
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_ducafecat_news_getx/common/routers/routes.dart';
-import 'package:flutter_ducafecat_news_getx/common/utils/utils.dart';
-//import values/values.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:uni_links/uni_links.dart';
-//import 'package:flutter_ducafecat_news_getx/common/entities/'
-import '../../common/apis/apis.dart';
+import 'package:flutter_ducafecat_news_getx/common/utils/sqliteDBhelper.dart';
 import 'index.dart';
-import '../../common/entities/entities.dart';
 import 'package:flutter_ducafecat_news_getx/common/entities/entities.dart';
-import 'package:flutter_ducafecat_news_getx/common/apis/apis.dart';
-
 
 
 class BlogPageController extends GetxController {
@@ -23,107 +11,132 @@ class BlogPageController extends GetxController {
   BlogPageController();
 
   /// 响应式成员变量
-
   final state = BlogState();
 
+  DbHelper dbHelper = DbHelper();
 
-
-  // Future<void> fetchMovies() async {
-  // //   var result = await MoviesAPI.get();
-  // //
-  // //   state.movies.addAll(result);
-  // // }
-
-
-  // Future<void> fetch() async {
-  //  state.movies = await MoviesAPI.get();
-  //
-  // }
-
-  // Future<dynamic> fetch() async {
-  //   var result = await MoviesAPI.get();
-  //   return movies.addAll(result);
-  //   //return result;
-  //
-  // }
-
-  /// 成员变量
-  int total = 6;
-// Future<dynamic> fetch() async {
-//     var result = await MoviesAPI.get();
-//     //return movies.addAll(result);
-//     //debugPrint(result.length);
-//     return state.movies.addAll(result);
-//
-//   }
-
-  Future<List<Movie>?> fetchMovie() async {
-    var result = await MoviesAPI.get();
-
-
-    state.movies.addAll(result!);
-  }
-
-  final RefreshController refreshController = RefreshController(
+  ///UI 事件
+  final RefreshController _refreshController = RefreshController(
     initialRefresh: true,
   );
 
+  get refreshController => _refreshController;
+
+  @override
+  void onInit() async{
+    super.onInit();
+    await DbHelper.initDatabase();
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+  }
+
+  Future<int> addTasks({required BlogList blogList}) async{
+    return  await dbHelper.insertList(blogList);
+  }
+
+  Future<void> fetchBlogList({bool isRefresh = false}) async {
+
+    //await DbHelper.initDatabase();
+
+    //DbHelper.testDb();
+
+    var result = await dbHelper.getLists();
+
+     if (isRefresh == true) {
+    state.blogList.clear();
+     }
+
+     //await showBlogList();
+
+
+     print("fectch");
+
+    state.blogList.addAll(result);
+  }
+
+
+   Future<void> showBlogItem(int idList) async {
+    final List<Map<String, Object?>>? blogItems =
+     await dbHelper.queryItem(idList);
+    state.blogItem.assignAll(blogItems!.map((data) => BlogItem.fromJson(data)).toList());
+  }
+
+
+
+  Future<int> createBlogList(BlogList blogList)  {
+    //DbHelper.testDb();
+    return  dbHelper.insertList(blogList);
+    fetchBlogList();
+  }
+
+  Future<int> createBlogItem(BlogItem item) async {
+    return await dbHelper.insertItem(item);
+  }
+
+  void markBlogListCompleted(int id) async {
+    await dbHelper.updateBlogLists(id);
+
+    fetchBlogList();
+  }
+
+  void markBlogItemCompleted(int id) async {
+    await dbHelper.updateBlogItem(id);
+    showBlogItem(id);
+  }
+
+
+
+  void deleteBlogList(BlogList list) {
+      dbHelper.deleteList(list);
+     //showBlogList();
+     //fetchBlogList();
+  }
+
+  /// 事件
+
   void onRefresh() {
-    fetchMovie().then((_) {
-      refreshController.refreshCompleted(resetFooterState: true);
+    fetchBlogList(isRefresh: true).then((_) {
+      _refreshController.refreshCompleted(resetFooterState: false);//true
+      // 20230305 debug to always refreshing
     }).catchError((_) {
-      refreshController.refreshFailed();
+      _refreshController.refreshFailed();
     });
   }
 
   void onLoading() {
-    if (state.movies.length < total) {
-      fetchMovie().then((_) {
-        refreshController.loadComplete();
+    if (state.blogList.length  < 20 ) {
+      fetchBlogList(isRefresh: true).then((_) {
+        //_refreshController.isLoading;
+        _refreshController.loadComplete();
       }).catchError((_) {
-        refreshController.loadFailed();
+        _refreshController.loadFailed();
       });
     } else {
-      refreshController.loadNoData();
+      _refreshController.loadNoData();
     }
   }
-  // Future<List<Movie>?> fetchMovie() async {
-  //   var movies = await MoviesAPI.get();
-  //   return movies;
-  //
-  //   //return movies.addAll(result);
-  // }
+
+  // 方法
+
 
 
   /// 生命周期
 
+  ///dispose 释放内存
   @override
-  void onInit() {
-    super.onInit();
-
+  void dispose() {
+    super.dispose();
+    // dispose 释放对象
+    _refreshController.dispose();
+    //BlogPageController.dispose();
+    //_idController.dispose();
+    //final TextEditingController _titleController = TextEditingController();
+    //final TextEditingController _blogNameController = TextEditingController();
+    //final TextEditingController _imageUrlController = TextEditingController();
   }
 
-    // handleInitialUri();
-    // handleIncomingLinks();
+}
 
-
-    @override
-    void onReady() {
-      super.onReady();
-      fetchMovie();
-      //state.fetch();
-    }
-
-    @override
-    void onClose() {
-      super.onClose();
-    }
-
-    @override
-    void dispose() {
-      //uriSub?.cancel();
-
-      super.dispose();
-      //CounterController.dispose();
-    }
-  }

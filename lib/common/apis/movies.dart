@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
-import 'dart:convert';
+//import 'dart:convert';
 //import 'package:flutter_ducafecat_news_getx/common/entities/entities.dart';
-import 'package:flutter_ducafecat_news_getx/common/utils/utils.dart';
-import 'package:flutter_ducafecat_news_getx/common/values/values.dart';
-import 'package:flutter_ducafecat_news_getx/main.dart';
+//import 'package:flutter_ducafecat_news_getx/common/utils/utils.dart';
+//import 'package:flutter_ducafecat_news_getx/common/values/values.dart';
+//import 'package:flutter_ducafecat_news_getx/main.dart';
 
 import '../entities/movies.dart';
 import 'dart:async';

@@ -46,7 +46,7 @@ class CounterController extends GetxController {
   // }
 
   /// 成员变量
-  int total = 6;
+  int total = 10;
 // Future<dynamic> fetch() async {
 //     var result = await MoviesAPI.get();
 //     //return movies.addAll(result);
